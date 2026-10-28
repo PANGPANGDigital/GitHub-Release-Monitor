@@ -17,9 +17,8 @@
 
 ```
 github-release-monitor/
-├── docker-compose.yml
-├── .env.example         # 凭据模板，复制为 .env 后填写
-├── .gitignore           # 忽略 .env / data/ / 编译缓存
+├── docker-compose.yml   # 部署配置，凭据直接填在这里
+├── .gitignore           # 忽略 data/ 与编译缓存
 ├── app/
 │   ├── Dockerfile
 │   ├── main.py
@@ -37,20 +36,16 @@ github-release-monitor/
 /volume1/docker/github-release-monitor/
 ```
 
-### 2. 配置凭据
+### 2. 修改配置
 
-凭据统一放在 `.env`，仓库里只保留模板文件：
+编辑 `docker-compose.yml`，填入你的飞书 Webhook 和 Secret：
 
-```bash
-cp .env.example .env
-```
-
-```ini
-GITHUB_REPOS=deepseek-ai/deepseek-harness
-CHECK_INTERVAL=600
-FEISHU_WEBHOOK=https://open.feishu.cn/open-apis/bot/v2/hook/xxxx
-FEISHU_SECRET=your-secret-here
-GITHUB_TOKEN=
+```yaml
+environment:
+  GITHUB_REPOS: "deepseek-ai/deepseek-harness,nginx/nginx"
+  CHECK_INTERVAL: "600"
+  FEISHU_WEBHOOK: "https://open.feishu.cn/open-apis/bot/v2/hook/xxxx"
+  FEISHU_SECRET: "your-secret-here"
 ```
 
 - `GITHUB_REPOS`：要监控的仓库，逗号分隔，格式 `owner/repo`
@@ -59,7 +54,7 @@ GITHUB_TOKEN=
 - `FEISHU_SECRET`：飞书签名密钥（在飞书机器人安全设置中开启签名校验后获取）
 - `GITHUB_TOKEN`：可选，Personal Access Token，用于提高 GitHub API 限额（未认证仅 60 次/小时）
 
-`docker-compose.yml` 只引用变量（如 `${FEISHU_SECRET:-}`），本身不含任何真实凭据，可安全提交到版本库。`.env` 已被 `.gitignore` 忽略，请勿提交。
+> 仓库里的 `docker-compose.yml` 各项凭据均为空占位，请只把真实值填写在你自己的部署副本里，不要提交回仓库。
 
 ### 3. 启动容器
 

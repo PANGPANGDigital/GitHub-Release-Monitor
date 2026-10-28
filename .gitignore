@@ -6,7 +6,7 @@ data/*
 __pycache__/
 *.pyc
 
-# 本地真实凭据，只保留 .env.example
+# 本地敏感配置（若自行用 .env 存凭据，不要提交）
 .env
 
 # 系统文件
