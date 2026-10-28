@@ -9,4 +9,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY main.py .
 
-CMD ["python", "main.py"]
+# -u 关闭 stdout 块缓冲，否则容器内日志会滞留数小时才落盘
+CMD ["python", "-u", "main.py"]
