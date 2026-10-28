@@ -1,0 +1,13 @@
+# 运行时状态（容器自动生成，不入库）
+data/*
+!data/.gitkeep
+
+# Python 编译缓存
+__pycache__/
+*.pyc
+
+# 本地真实凭据，只保留 .env.example
+.env
+
+# 系统文件
+.DS_Store

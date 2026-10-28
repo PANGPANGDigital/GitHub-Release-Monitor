@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  github-release-monitor:
+    build: ./app
+    container_name: github-release-monitor
+    restart: unless-stopped
+    labels:
+      - "app.version=1.0.3"
+    volumes:
+      - /volume1/docker/Github-Release-Monitor/data:/app/data
+    environment:
+      # 监控的 GitHub 仓库，逗号分隔，例如 deepseek-ai/deepseek-harness,nginx/nginx
+      GITHUB_REPOS: "${GITHUB_REPOS:-deepseek-ai/deepseek-harness}"
+      # 检查间隔（秒），默认 600 = 10 分钟
+      CHECK_INTERVAL: "${CHECK_INTERVAL:-600}"
+      # 飞书自定义机器人 Webhook 地址，在 .env 中配置
+      FEISHU_WEBHOOK: "${FEISHU_WEBHOOK:-}"
+      # 飞书签名密钥（如无签名可留空，但建议填写），在 .env 中配置
+      FEISHU_SECRET: "${FEISHU_SECRET:-}"
+      # GitHub Token（可选，提高 API 限额），在 .env 中配置
+      GITHUB_TOKEN: "${GITHUB_TOKEN:-}"
+      # HTTP 代理（如需翻墙访问 GitHub 可取消注释并修改为实际地址）
+      HTTP_PROXY: ""
+      HTTPS_PROXY: ""
+      # NO_PROXY: "localhost,127.0.0.1"
